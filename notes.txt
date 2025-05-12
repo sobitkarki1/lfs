@@ -120,3 +120,6 @@ source ~/.bash_profile
 
 ## Preparation complete
 echo preparation complete
+
+echo $LFS
+bash version-check.sh
