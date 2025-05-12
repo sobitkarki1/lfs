@@ -1,0 +1,51 @@
+# notes.txt
+
+creating a new partition
+  helpful commands:
+    lsblk
+    sudo parted /dev/sda print
+  so EFI Boot Partition starts at 1025kB and the size is 500MB
+  mounted in /boot/efi
+  usual contents are
+sudo find /boot/efi -type f
+/boot/efi/EFI/ubuntu/grubx64.efi
+/boot/efi/EFI/ubuntu/shimx64.efi
+/boot/efi/EFI/ubuntu/mmx64.efi
+/boot/efi/EFI/ubuntu/BOOTX64.CSV
+/boot/efi/EFI/ubuntu/grub.cfg
+/boot/efi/EFI/BOOT/BOOTX64.EFI
+/boot/efi/EFI/BOOT/fbx64.efi
+/boot/efi/EFI/BOOT/mmx64.efi
+
+So thats that....
+
+---
+
+Need to make a new partition and decide on partition scheme
+We wont be using separate swap partition
+We only need 12GB root partition for lfs
+EFI boot partition is usually shared with host system
+
+So in conclusion we only have one extra partition to care about.
+that partition will eventually be in /mnt/lfs
+
+mount the partition 
+the commands goes as follows:
+
+sudo su
+export LFS=/mnt/lfs
+umask 022
+echo $LFS     # check
+umask         # check
+mkdir -pv $LFS
+mount -v -t ext4 /dev/<xxx> $LFS
+
+chown root:root $LFS
+chmod 755 $LFS
+
+mkdir -v $LFS/sources
+chmod -v a+wt $LFS/sources
+
+# cd
+wget https://mirror.freedif.org/pub/lfs/lfs-packages/12.3-rc2/wget-list
+wget https://mirror.freedif.org/pub/lfs/lfs-packages/12.3-rc2/md5sums
